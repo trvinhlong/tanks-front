@@ -4,6 +4,9 @@ import Gallery from 'react-photo-gallery';
 import Lightbox from 'react-images';
 import Config from '../Config';
 import $ from 'jquery';
+import ReactGA from 'react-ga';
+
+ReactGA.initialize(Config.gaTrackingId);
 
 class InStock extends React.Component {
     constructor() {
@@ -13,20 +16,13 @@ class InStock extends React.Component {
         this.openLightbox = this.openLightbox.bind(this);
         this.gotoNext = this.gotoNext.bind(this);
         this.gotoPrevious = this.gotoPrevious.bind(this);
-        this.state.photos = [
-            { src: 'https://source.unsplash.com/2ShvY8Lf6l0/800x599', width: 16, height: 9 },
-            { src: 'https://source.unsplash.com/Dm-qxdynoEc/800x799', width: 4, height: 3 },
-            { src: 'https://source.unsplash.com/qDkso9nvCg0/600x799', width: 4, height: 3 },
-            { src: 'https://source.unsplash.com/iecJiKe_RNg/600x799', width: 4, height: 3 },
-            { src: 'https://source.unsplash.com/epcsn8Ed8kY/600x799', width: 4, height: 3 },
-            { src: 'https://source.unsplash.com/NQSWvyVRIJk/800x599', width: 4, height: 3 },
-            { src: 'https://source.unsplash.com/zh7GEuORbUw/600x799', width: 4, height: 3 },
-            { src: 'https://source.unsplash.com/PpOHJezOalU/800x599', width: 4, height: 3 },
-            { src: 'https://source.unsplash.com/I1ASdgphUH4/800x599', width: 4, height: 3 }
-        ];
+        this.state.photos = [];
         this.getPhotos();
     }
 
+    componentDidMount() {
+        ReactGA.pageview(window.location.href);
+    }
 
     getPhotos() {
         $.getJSON(Config.apiHost + '/photos')
